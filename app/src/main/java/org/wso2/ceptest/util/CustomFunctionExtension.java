@@ -18,11 +18,14 @@
 
 package org.wso2.ceptest.util;
 
-import org.wso2.siddhi.core.config.ExecutionPlanContext;
-import org.wso2.siddhi.core.exception.ExecutionPlanCreationException;
+import org.wso2.siddhi.core.config.SiddhiAppContext;
+import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
 import org.wso2.siddhi.core.executor.ExpressionExecutor;
 import org.wso2.siddhi.core.executor.function.FunctionExecutor;
+import org.wso2.siddhi.core.util.config.ConfigReader;
 import org.wso2.siddhi.query.api.definition.Attribute;
+
+import java.util.Map;
 
 public class CustomFunctionExtension extends FunctionExecutor {
 
@@ -35,14 +38,14 @@ public class CustomFunctionExtension extends FunctionExecutor {
      * @param executionPlanContext         the context of the execution plan
      */
     @Override
-    protected void init(ExpressionExecutor[] attributeExpressionExecutors, ExecutionPlanContext executionPlanContext) {
+    protected void init(ExpressionExecutor[] attributeExpressionExecutors, ConfigReader configReader, SiddhiAppContext executionPlanContext) {
         for (ExpressionExecutor expressionExecutor : attributeExpressionExecutors) {
             Attribute.Type attributeType = expressionExecutor.getReturnType();
             if (attributeType == Attribute.Type.DOUBLE) {
                 returnType = attributeType;
 
             } else if ((attributeType == Attribute.Type.STRING) || (attributeType == Attribute.Type.BOOL)) {
-                throw new ExecutionPlanCreationException("Plus cannot have parameters with types String or Bool");
+                throw new SiddhiAppCreationException("Plus cannot have parameters with types String or Bool");
             } else {
                 returnType = Attribute.Type.LONG;
             }
@@ -124,8 +127,8 @@ public class CustomFunctionExtension extends FunctionExecutor {
      * @return stateful objects of the processing element as an array
      */
     @Override
-    public Object[] currentState() {
-        return new Object[0];
+    public Map<String, Object> currentState() {
+        return null;
     }
 
     /**
@@ -136,7 +139,7 @@ public class CustomFunctionExtension extends FunctionExecutor {
      *              the same order provided by currentState().
      */
     @Override
-    public void restoreState(Object[] state) {
+    public void restoreState(Map<String, Object> state) {
 
     }
 

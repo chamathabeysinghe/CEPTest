@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
-import org.wso2.siddhi.core.ExecutionPlanRuntime;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.query.output.callback.QueryCallback;
@@ -46,7 +46,7 @@ public class FunctionSample {
                 "insert into outputStream;";
 
         //Generating runtime
-        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
+        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(executionPlan);
 
         //Adding callback to retrieve output events from query
         executionPlanRuntime.addCallback("query1", new QueryCallback() {

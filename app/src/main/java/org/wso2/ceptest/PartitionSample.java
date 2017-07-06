@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
-import org.wso2.siddhi.core.ExecutionPlanRuntime;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
@@ -51,7 +51,7 @@ public class PartitionSample {
                 "end ";
 
         //Generating runtime
-        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
+        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(executionPlan);
 
         //Adding callback to retrieve output events from stream
         executionPlanRuntime.addCallback("OutStockStream", new StreamCallback() {

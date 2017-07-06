@@ -24,7 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.log4j.BasicConfigurator;
-import org.wso2.siddhi.core.ExecutionPlanRuntime;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.query.output.callback.QueryCallback;
@@ -53,7 +53,7 @@ public class SimpleFilterSample {
                 "insert into outputStream ;";
 
         //Generating runtime
-        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
+        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(executionPlan);
         Log.d("Siddhi", "siddhiManager execution plan made successfully");
 
         //Adding callback to retrieve output events from query
@@ -69,6 +69,7 @@ public class SimpleFilterSample {
                         Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+                Log.e("Siddhi Details",sb.toString());
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
             }
         });
