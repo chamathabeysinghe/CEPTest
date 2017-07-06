@@ -18,6 +18,7 @@
 
 package org.wso2.ceptest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -56,7 +57,13 @@ public class PartitionSample {
         executionPlanRuntime.addCallback("OutStockStream", new StreamCallback() {
             @Override
             public void receive(Event[] events) {
-                Toast.makeText(context, Arrays.deepToString(events), Toast.LENGTH_SHORT).show();
+                final Event[] eventsFinal=events;
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, Arrays.deepToString(eventsFinal), Toast.LENGTH_SHORT).show();
+                    }
+                });
+//                Toast.makeText(context, Arrays.deepToString(events), Toast.LENGTH_SHORT).show();
                 EventPrinter.print(events);
             }
         });

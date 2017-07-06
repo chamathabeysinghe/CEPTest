@@ -18,6 +18,7 @@
 
 package org.wso2.ceptest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -51,9 +52,15 @@ public class FunctionSample {
         executionPlanRuntime.addCallback("query1", new QueryCallback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
-                StringBuilder sb = new StringBuilder();
+                final StringBuilder sb = new StringBuilder();
                 sb.append("Events{ @timeStamp = ").append(timeStamp).append(", inEvents = ").append(Arrays.deepToString(inEvents)).append(", RemoveEvents = ").append(Arrays.deepToString(removeEvents)).append(" }");
-                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
+
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
             }
         });

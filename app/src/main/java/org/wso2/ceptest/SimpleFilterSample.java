@@ -18,10 +18,12 @@
 
 package org.wso2.ceptest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.log4j.BasicConfigurator;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
@@ -34,6 +36,7 @@ import java.util.Arrays;
 public class SimpleFilterSample {
 
     public static void execute(final Context context) throws InterruptedException {
+        BasicConfigurator.configure();
 
         Log.d("Siddhi", "Creating siddhi manager");
 
@@ -58,9 +61,14 @@ public class SimpleFilterSample {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
 
-                StringBuilder sb = new StringBuilder();
+                final StringBuilder sb = new StringBuilder();
                 sb.append("Events{ @timeStamp = ").append(timeStamp).append(", inEvents = ").append(Arrays.deepToString(inEvents)).append(", RemoveEvents = ").append(Arrays.deepToString(removeEvents)).append(" }");
-                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
+
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
             }
         });
@@ -81,7 +89,7 @@ public class SimpleFilterSample {
         inputHandler.send(new Object[]{"GOOG", 50f, 30l});
         inputHandler.send(new Object[]{"IBM", 76.6f, 400l});
         inputHandler.send(new Object[]{"WSO2", 45.6f, 50l});
-        Thread.sleep(500);
+        Thread.sleep(100);
         Log.d("Siddhi", "Events sent successfully");
 
         //Shutting down the runtime
