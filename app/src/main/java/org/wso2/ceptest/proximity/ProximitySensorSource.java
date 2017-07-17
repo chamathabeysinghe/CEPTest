@@ -27,7 +27,6 @@ import org.wso2.siddhi.core.stream.input.source.SourceEventListener;
 import org.wso2.siddhi.core.util.config.ConfigReader;
 import org.wso2.siddhi.core.util.transport.OptionHolder;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
-
 import java.util.Map;
 
 @Extension(
@@ -52,6 +51,11 @@ public class ProximitySensorSource extends Source {
         streamDefinition=StreamDefinition.id(context);
         streamDefinition.getAttributeList().addAll(sourceEventListener.getStreamDefinition().getAttributeList());
 
+    }
+
+    @Override
+    public Class[] getOutputEventClasses() {
+        return new Class[0];
     }
 
     @Override

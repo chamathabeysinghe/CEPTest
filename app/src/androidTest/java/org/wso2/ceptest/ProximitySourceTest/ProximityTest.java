@@ -27,14 +27,14 @@ public class ProximityTest {
     private volatile int count;
     @Before
     public void createMock() {
-        context = InstrumentationRegistry.getContext();
-        eventArrived=false;
-        count=0;
-        try {
-            ProximitySensor.getInstance(context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        context = InstrumentationRegistry.getContext();
+//        eventArrived=false;
+//        count=0;
+//        try {
+//            ProximitySensor.getInstance(context);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ProximityTest {
 
         String inStreamDefinition = "" +
                 "@app:name('foo')" +
-                "@source(type='proximity', @map(type='passThrough'))" +
+                "@source(type='inMemory', @map(type='passThrough'))" +
                 "define stream streamProximity ( sensorName string, timestamp long, accuracy int,distance float);";
 
         String query = ("@info(name = 'query1') " +
