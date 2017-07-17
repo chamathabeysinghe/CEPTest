@@ -1,10 +1,14 @@
 package org.wso2.ceptest;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.SmallTest;
+import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
-import android.view.View;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.wso2.ceptest.proximity.ProximitySensor;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
@@ -12,53 +16,25 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.query.output.callback.QueryCallback;
 import org.wso2.siddhi.core.util.EventPrinter;
 
-public class MainActivity extends AppCompatActivity {
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
+
+@RunWith(AndroidJUnit4.class)
+@SmallTest
+public class SiddhiSourceTest {
 
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_test);
-        //runSiddhiApp();
+    private Context instrumentationCtx;
+    private int eventCount=0;
+    @Before
+    public void setup() {
+        instrumentationCtx = InstrumentationRegistry.getContext();
     }
 
-    public void buttonClickSimpleFilter(View view){
+    @Test
+    public void testSensorSource1(){
         try {
-            SimpleFilterSample.execute(this);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void buttonClickExtension(View view){
-        try {
-            ExtensionSample.execute(this);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void buttonClickFunction(View view){
-        try {
-            FunctionSample.execute(this);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void buttonClickPartition(View view){
-        try {
-            PartitionSample.execute(this);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    private void runSiddhiApp(){
-        try {
-            ProximitySensor.getInstance(this);
+            ProximitySensor.getInstance(instrumentationCtx);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,14 +58,29 @@ public class MainActivity extends AppCompatActivity {
         siddhiAppRuntime.addCallback("query1", new QueryCallback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents);
-                for (Event event : inEvents) {
-                    Log.e("Event from the source :",event.toString());
-                }
+                printOutput(timeStamp,inEvents,removeEvents);
             }
         });
 
+
         siddhiAppRuntime.start();
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertThat(eventCount,greaterThan(0));
     }
-    */
+
+    private void printOutput(long timeStamp, Event[] inEvents, Event[] removeEvents){
+        EventPrinter.print(timeStamp, inEvents, removeEvents);
+        for (Event event : inEvents) {
+            Log.e("Event from the source :",event.toString());
+            eventCount++;
+        }
+    }
+
+
 }

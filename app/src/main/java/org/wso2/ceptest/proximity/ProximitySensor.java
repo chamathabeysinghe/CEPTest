@@ -24,7 +24,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-
+import android.util.Log;
 import org.wso2.siddhi.core.stream.input.source.SourceEventListener;
 
 public class ProximitySensor implements SensorEventListener {
@@ -36,6 +36,7 @@ public class ProximitySensor implements SensorEventListener {
 
     private SourceEventListener sourceEventListener;
 
+    private float previousValue=-1;
     private ProximitySensor(Context context) throws Exception {
         this.context=context;
         sensorManager= (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -68,7 +69,10 @@ public class ProximitySensor implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if(event.values[0]==previousValue)return;
+        previousValue=event.values[0];
         Object eventOutput[] ={event.sensor.getName(),event.timestamp,event.accuracy,event.values[0]};
+        Log.e("Sensor","Sensor Changed");
         this.sourceEventListener.onEvent(eventOutput,null);
     }
 
