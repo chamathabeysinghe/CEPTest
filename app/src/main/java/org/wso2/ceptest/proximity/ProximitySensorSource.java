@@ -18,9 +18,6 @@
 
 package org.wso2.ceptest.proximity;
 
-import android.app.Activity;
-import android.util.Log;
-
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
 import org.wso2.siddhi.core.config.SiddhiAppContext;
@@ -28,11 +25,9 @@ import org.wso2.siddhi.core.exception.ConnectionUnavailableException;
 import org.wso2.siddhi.core.stream.input.source.Source;
 import org.wso2.siddhi.core.stream.input.source.SourceEventListener;
 import org.wso2.siddhi.core.util.config.ConfigReader;
-import org.wso2.siddhi.core.util.statistics.memory.ObjectSizeCalculator;
 import org.wso2.siddhi.core.util.transport.OptionHolder;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 @Extension(
